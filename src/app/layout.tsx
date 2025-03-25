@@ -3,6 +3,9 @@ import type { Metadata } from 'next'
 import './globals.css'
 import { ClerkProvider } from '@clerk/nextjs'
 import { ThemeProvider } from '@/entities/providers/theme-provider'
+import { Navbar } from '@/widgets/navbar/ui'
+import { Sidebar } from '@/widgets/sidebar/ui/sidebar'
+import { Toaster } from 'react-hot-toast'
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -16,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider dynamic>
-      <html lang="en">
+      <html lang="en" suppressContentEditableWarning suppressHydrationWarning>
         <body className={` antialiased`}>
           <ThemeProvider
             attribute="class"
@@ -24,7 +27,22 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            {children}
+            <div className="min-h-screen">
+              <Navbar />
+
+              <main className="py-8">
+                {/* container to center the content */}
+                <div className="max-w-7xl mx-auto px-4">
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <div className="hidden lg:block lg:col-span-3">
+                      <Sidebar />
+                    </div>
+                    <div className="lg:col-span-9">{children}</div>
+                  </div>
+                </div>
+              </main>
+            </div>
+            <Toaster />
           </ThemeProvider>
         </body>
       </html>

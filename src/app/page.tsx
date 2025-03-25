@@ -1,31 +1,15 @@
-'use client'
+import { CreatePost } from '@/features/create-post/ui'
+import { currentUser } from '@clerk/nextjs/server'
 
-import { ThemeToggleButton } from '@/features/theme-toggle-button'
-import { Button } from '@/shared/ui/button'
-import {
-  SignInButton,
-  SignUpButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from '@clerk/nextjs'
-
-export default function Home() {
+export default async function Home() {
+  const user = await currentUser()
   return (
-    <div>
-      <SignedOut>
-        <SignInButton mode="modal">
-          <Button>Sign in</Button>
-        </SignInButton>
-        <SignUpButton mode="modal">
-          <Button>Sign up</Button>
-        </SignUpButton>
-      </SignedOut>
-      <SignedIn>
-        <UserButton />
-      </SignedIn>
+    <div className="grid grid-cols-1 lg:grid-cols-10 gap-6">
+      <div className="lg:col-span-6">{user && <CreatePost />}</div>
 
-      <ThemeToggleButton />
+      <div className="hidden lg:block lg:col-span-4 sticky top-20">
+        {/* <WhoToFollow /> */}
+      </div>
     </div>
   )
 }
