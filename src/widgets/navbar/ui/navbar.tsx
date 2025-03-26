@@ -1,13 +1,13 @@
-import Link from 'next/link'
-import React from 'react'
-import { DesktopNavbar } from './desktop-navbar'
-import { MobileNavbar } from './mobile-navbar'
-import { currentUser } from '@clerk/nextjs/server'
-import { syncUser } from '@/entities/actions/user.actions'
+import Link from "next/link";
+import React from "react";
+import { DesktopNavbar } from "./desktop-navbar";
+import { MobileNavbar } from "./mobile-navbar";
+import { currentUser } from "@clerk/nextjs/server";
+import { syncUser } from "@/entities/actions/user.actions";
 
 export const Navbar = async () => {
-  const user = await currentUser()
-  if (user) await syncUser()
+  const user = await currentUser();
+  if (user) await syncUser();
 
   return (
     <nav className="sticky top-0 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50">
@@ -27,5 +27,5 @@ export const Navbar = async () => {
         </div>
       </div>
     </nav>
-  )
-}
+  );
+};

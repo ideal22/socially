@@ -1,19 +1,21 @@
-import { currentUser } from '@clerk/nextjs/server'
-import { Card, CardContent } from '@/shared/ui/card'
+import { currentUser } from "@clerk/nextjs/server";
+import { Card, CardContent } from "@/shared/ui/card";
 
-import Link from 'next/link'
-import { Avatar, AvatarImage } from '@/shared/ui/avatar'
-import { Separator } from '@/shared/ui/separator'
-import { LinkIcon, MapPinIcon } from 'lucide-react'
-import { UnAuthenticatedSidebar } from './unauthenticated-sidebar'
-import { getUserByClerkId } from '@/entities/actions/user.actions'
+import Link from "next/link";
+import { Avatar, AvatarImage } from "@/shared/ui/avatar";
+import { Separator } from "@/shared/ui/separator";
+import { LinkIcon, MapPinIcon } from "lucide-react";
+import { UnAuthenticatedSidebar } from "./unauthenticated-sidebar";
+import { getUserByClerkId } from "@/entities/actions/user.actions";
 
 export const Sidebar = async () => {
-  const authUser = await currentUser()
-  if (!authUser) return <UnAuthenticatedSidebar />
+  const authUser = await currentUser();
+  if (!authUser) return <UnAuthenticatedSidebar />;
 
-  const user = await getUserByClerkId(authUser.id)
-  if (!user) return null
+  console.log(authUser);
+
+  const user = await getUserByClerkId(authUser.id);
+  if (!user) return null;
 
   return (
     <div className="sticky top-20">
@@ -25,7 +27,7 @@ export const Sidebar = async () => {
               className="flex flex-col items-center justify-center"
             >
               <Avatar className="w-20 h-20 border-2 ">
-                <AvatarImage src={user.image || '/avatar.png'} />
+                <AvatarImage src={user.image || "/avatar.png"} />
               </Avatar>
 
               <div className="mt-4 space-y-1">
@@ -57,7 +59,7 @@ export const Sidebar = async () => {
             <div className="w-full space-y-2 text-sm">
               <div className="flex items-center text-muted-foreground">
                 <MapPinIcon className="w-4 h-4 mr-2" />
-                {user.location || 'No location'}
+                {user.location || "No location"}
               </div>
               <div className="flex items-center text-muted-foreground">
                 <LinkIcon className="w-4 h-4 mr-2 shrink-0" />
@@ -70,7 +72,7 @@ export const Sidebar = async () => {
                     {user.website}
                   </a>
                 ) : (
-                  'No website'
+                  "No website"
                 )}
               </div>
             </div>
@@ -78,5 +80,5 @@ export const Sidebar = async () => {
         </CardContent>
       </Card>
     </div>
-  )
-}
+  );
+};

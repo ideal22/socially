@@ -1,6 +1,6 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card'
-import { SignInButton, SignUpButton } from '@clerk/nextjs'
-import { Button } from '@/shared/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card";
+import { SignInButton, SignUpButton } from "@clerk/nextjs";
+import { Button } from "@/shared/ui/button";
 export const UnAuthenticatedSidebar = () => (
   <div className="sticky top-20">
     <Card>
@@ -13,6 +13,7 @@ export const UnAuthenticatedSidebar = () => (
         <p className="text-center text-muted-foreground mb-4">
           Login to access your profile and connect with others.
         </p>
+
         <SignInButton mode="modal">
           <Button className="w-full" variant="outline">
             Login
@@ -26,4 +27,4 @@ export const UnAuthenticatedSidebar = () => (
       </CardContent>
     </Card>
   </div>
-)
+);
