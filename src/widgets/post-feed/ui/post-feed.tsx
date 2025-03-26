@@ -1,5 +1,6 @@
 import { getPosts } from "@/entities/actions/post.action";
 import { getDbUserId } from "@/entities/actions/user.actions";
+import PostCard from "./post-card";
 
 export const PostFeed = async () => {
   const posts = await getPosts();
@@ -7,7 +8,7 @@ export const PostFeed = async () => {
   return (
     <div className="space-y-6">
       {posts.map((post) => (
-        <div key={post.id}>{post.content}</div>
+        <PostCard key={post.id} post={post} dbUserId={dbUserId!} />
       ))}
     </div>
   );
