@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import {
   BellIcon,
@@ -8,31 +8,32 @@ import {
   MoonIcon,
   SunIcon,
   UserIcon,
-} from 'lucide-react'
-import { Button } from '@/shared/ui/button'
+} from "lucide-react";
+import { Button } from "@/shared/ui/button";
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from '@/shared/ui/sheet'
-import { useState } from 'react'
-import { useAuth, SignInButton, SignOutButton } from '@clerk/nextjs'
-import { useTheme } from 'next-themes'
-import Link from 'next/link'
+} from "@/shared/ui/sheet";
+import { useState } from "react";
+import { useAuth, SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
+import { useTheme } from "next-themes";
+import Link from "next/link";
 
 export const MobileNavbar = () => {
-  const [showMobileMenu, setShowMobileMenu] = useState(false)
-  const { isSignedIn } = useAuth()
-  const { theme, setTheme } = useTheme()
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const { isSignedIn } = useAuth();
+  const { theme, setTheme } = useTheme();
+  const { user } = useUser();
 
   return (
     <div className="flex md:hidden items-center space-x-2">
       <Button
         variant="ghost"
         size="icon"
-        onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+        onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
         className="mr-2"
       >
         <SunIcon className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
@@ -79,7 +80,12 @@ export const MobileNavbar = () => {
                   className="flex items-center gap-3 justify-start"
                   asChild
                 >
-                  <Link href="/profile">
+                  <Link
+                    href={`/profile/${
+                      user?.username ??
+                      user?.emailAddresses[0].emailAddress.split("@")[0]
+                    }`}
+                  >
                     <UserIcon className="w-4 h-4" />
                     Profile
                   </Link>
@@ -105,5 +111,5 @@ export const MobileNavbar = () => {
         </SheetContent>
       </Sheet>
     </div>
-  )
-}
+  );
+};

@@ -4,7 +4,11 @@ import { prisma } from "@/shared/lib/prisma";
 import { getDbUserId } from "./user.actions";
 import { revalidatePath } from "next/cache";
 
-export async function createPost(content: string, image: string) {
+export async function createPost(
+  content: string,
+  image: string,
+  title: string,
+) {
   try {
     const userId = await getDbUserId();
 
@@ -12,6 +16,7 @@ export async function createPost(content: string, image: string) {
 
     const post = await prisma.post.create({
       data: {
+        title,
         content,
         image,
         authorId: userId,
@@ -74,6 +79,49 @@ export const getPosts = async () => {
   } catch (error) {
     console.log("Error in getPosts", error);
     throw new Error("Failed to fetch posts");
+  }
+};
+
+export const getPostById = async (postId: string) => {
+  try {
+    return await prisma.post.findUnique({
+      where: { id: postId },
+      include: {
+        author: {
+          select: {
+            id: true,
+            name: true,
+            username: true,
+            image: true,
+          },
+        },
+        comments: {
+          include: {
+            author: {
+              select: {
+                id: true,
+                username: true,
+                image: true,
+                name: true,
+              },
+            },
+          },
+        },
+        likes: {
+          select: {
+            userId: true,
+          },
+        },
+        _count: {
+          select: {
+            likes: true,
+            comments: true,
+          },
+        },
+      },
+    });
+  } catch (e) {
+    console.error(e);
   }
 };
 

@@ -11,10 +11,12 @@ import { Button } from "@/shared/ui/button";
 import toast from "react-hot-toast";
 import { createPost } from "@/entities/actions/post.action";
 import ImageUpload from "@/features/upload-image/ui/upload-image";
+import { Input } from "@/shared/ui/input";
 
 export const CreatePost = () => {
   const { user } = useUser();
   const [content, setContent] = useState("");
+  const [title, setTitle] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [isPosting, setIsPosting] = useState(false);
   const [showImageUpload, setShowImageUpload] = useState(false);
@@ -24,10 +26,11 @@ export const CreatePost = () => {
 
     setIsPosting(true);
     try {
-      const result = await createPost(content, imageUrl);
+      const result = await createPost(content, imageUrl, title);
       if (result?.success) {
         setContent("");
         setImageUrl("");
+        setTitle("");
         setShowImageUpload(false);
 
         toast.success("Post created successfully");
@@ -44,17 +47,28 @@ export const CreatePost = () => {
     <Card className="mb-6">
       <CardContent className="pt-6">
         <div className="space-y-4">
-          <div className="flex space-x-4">
-            <Avatar className="w-10 h-10">
+          <div className="flex space-x-4 items-start bg-white p-4 rounded-lg shadow-md">
+            <Avatar className="w-10 h-10 flex-shrink-0">
               <AvatarImage src={user?.imageUrl || "/avatar.png"} />
             </Avatar>
-            <Textarea
-              placeholder="What's on your mind?"
-              className="min-h-[100px] resize-none border-none focus-visible:ring-0 p-0 text-base"
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              disabled={isPosting}
-            />
+
+            <div className="flex flex-col flex-1 space-y-2">
+              <Input
+                type="text"
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500"
+                placeholder="Give a title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+
+              <Textarea
+                placeholder="What's on your mind?"
+                className="w-full min-h-[120px] resize-none border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500"
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                disabled={isPosting}
+              />
+            </div>
           </div>
 
           {(showImageUpload || imageUrl) && (
@@ -87,7 +101,9 @@ export const CreatePost = () => {
             <Button
               className="flex items-center"
               onClick={handleSubmit}
-              disabled={(!content.trim() && !imageUrl) || isPosting}
+              disabled={
+                (!content.trim() && !imageUrl) || isPosting || !title.trim()
+              }
             >
               {isPosting ? (
                 <>

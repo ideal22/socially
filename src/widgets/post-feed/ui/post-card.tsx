@@ -133,6 +133,7 @@ export const PostCard = ({
                   />
                 )}
               </div>
+              <h1 className="text-lg font-semibold mb-2">{post.title}</h1>
               <p className="mt-2 text-sm text-foreground break-words">
                 {post.content}
               </p>
@@ -142,13 +143,15 @@ export const PostCard = ({
           {/* POST IMAGE */}
           {post.image && (
             <div className="rounded-lg overflow-hidden">
-              <Image
-                src={post.image}
-                alt="Post content"
-                className="w-full h-auto object-cover"
-                width={500}
-                height={500}
-              />
+              <Link href={`/post/${post.id}`}>
+                <Image
+                  src={post.image}
+                  alt="Post content"
+                  className="w-full h-auto object-cover"
+                  width={200}
+                  height={200}
+                />
+              </Link>
             </div>
           )}
 
