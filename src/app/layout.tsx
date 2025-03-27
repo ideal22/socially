@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/entities/providers/theme-provider";
 import { Navbar } from "@/widgets/navbar/ui";
 import { Sidebar } from "@/widgets/sidebar/ui/sidebar";
 import { Toaster } from "react-hot-toast";
+import NextTopLoader from "nextjs-toploader";
 
 export const metadata: Metadata = {
   title: "Socially",
@@ -28,6 +29,18 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <div className="min-h-screen">
+              <NextTopLoader
+                color="#f11946"
+                initialPosition={0.08}
+                crawlSpeed={200}
+                height={3}
+                crawl
+                easing="ease"
+                speed={200}
+                zIndex={1600}
+                showAtBottom={false}
+                showSpinner={false}
+              />
               <Navbar />
 
               <main className="py-8">
