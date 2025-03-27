@@ -12,8 +12,6 @@ export const Sidebar = async () => {
   const authUser = await currentUser();
   if (!authUser) return <UnAuthenticatedSidebar />;
 
-  console.log(authUser);
-
   const user = await getUserByClerkId(authUser.id);
   if (!user) return null;
 

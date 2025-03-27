@@ -146,6 +146,8 @@ export const PostCard = ({
                 src={post.image}
                 alt="Post content"
                 className="w-full h-auto object-cover"
+                width={500}
+                height={500}
               />
             </div>
           )}

@@ -1,45 +1,44 @@
-'use client'
+"use client";
 
-import { useUser } from '@clerk/nextjs'
-import { useState } from 'react'
-import { Card, CardContent } from '@/shared/ui/card'
-import { Avatar, AvatarImage } from '@/shared/ui/avatar'
-import { Textarea } from '@/shared/ui/textarea'
-import { ImageIcon, Loader2Icon, SendIcon } from 'lucide-react'
-import { Button } from '@/shared/ui/button'
-// import { createPost } from '@/actions/post.action'
-import toast from 'react-hot-toast'
-import { createPost } from '@/entities/actions/post.action'
-// import ImageUpload from './ImageUpload'
+import { useUser } from "@clerk/nextjs";
+import { useState } from "react";
+import { Card, CardContent } from "@/shared/ui/card";
+import { Avatar, AvatarImage } from "@/shared/ui/avatar";
+import { Textarea } from "@/shared/ui/textarea";
+import { ImageIcon, Loader2Icon, SendIcon } from "lucide-react";
+import { Button } from "@/shared/ui/button";
+
+import toast from "react-hot-toast";
+import { createPost } from "@/entities/actions/post.action";
+import ImageUpload from "@/features/upload-image/ui/upload-image";
 
 export const CreatePost = () => {
-  const { user } = useUser()
-  const [content, setContent] = useState('')
-  const [imageUrl, setImageUrl] = useState('')
-  const [isPosting, setIsPosting] = useState(false)
-  const [showImageUpload, setShowImageUpload] = useState(false)
+  const { user } = useUser();
+  const [content, setContent] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const [isPosting, setIsPosting] = useState(false);
+  const [showImageUpload, setShowImageUpload] = useState(false);
 
   const handleSubmit = async () => {
-    if (!content.trim() && !imageUrl) return
+    if (!content.trim() && !imageUrl) return;
 
-    setIsPosting(true)
+    setIsPosting(true);
     try {
-      const result = await createPost(content, imageUrl)
+      const result = await createPost(content, imageUrl);
       if (result?.success) {
-        // reset the form
-        setContent('')
-        setImageUrl('')
-        setShowImageUpload(false)
+        setContent("");
+        setImageUrl("");
+        setShowImageUpload(false);
 
-        toast.success('Post created successfully')
+        toast.success("Post created successfully");
       }
     } catch (error) {
-      console.error('Failed to create post:', error)
-      toast.error('Failed to create post')
+      console.error("Failed to create post:", error);
+      toast.error("Failed to create post");
     } finally {
-      setIsPosting(false)
+      setIsPosting(false);
     }
-  }
+  };
 
   return (
     <Card className="mb-6">
@@ -47,7 +46,7 @@ export const CreatePost = () => {
         <div className="space-y-4">
           <div className="flex space-x-4">
             <Avatar className="w-10 h-10">
-              <AvatarImage src={user?.imageUrl || '/avatar.png'} />
+              <AvatarImage src={user?.imageUrl || "/avatar.png"} />
             </Avatar>
             <Textarea
               placeholder="What's on your mind?"
@@ -60,14 +59,14 @@ export const CreatePost = () => {
 
           {(showImageUpload || imageUrl) && (
             <div className="border rounded-lg p-4">
-              {/* <ImageUpload
+              <ImageUpload
                 endpoint="postImage"
                 value={imageUrl}
                 onChange={(url) => {
-                  setImageUrl(url)
-                  if (!url) setShowImageUpload(false)
+                  setImageUrl(url);
+                  if (!url) setShowImageUpload(false);
                 }}
-              /> */}
+              />
             </div>
           )}
 
@@ -106,5 +105,5 @@ export const CreatePost = () => {
         </div>
       </CardContent>
     </Card>
-  )
-}
+  );
+};
