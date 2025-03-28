@@ -49,6 +49,12 @@ export async function getUserPosts(userId: string) {
             name: true,
             username: true,
             image: true,
+            bio: true,
+            _count: {
+              select: {
+                followers: true,
+              },
+            },
           },
         },
         comments: {
@@ -107,6 +113,12 @@ export async function getUserLikedPosts(userId: string) {
             name: true,
             username: true,
             image: true,
+            bio: true,
+            _count: {
+              select: {
+                followers: true,
+              },
+            },
           },
         },
         comments: {
