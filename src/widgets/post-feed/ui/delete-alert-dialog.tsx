@@ -13,20 +13,31 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/shared/ui/alert-dialog";
+import { FC, useState } from "react";
+import { deletePost } from "@/entities/actions/post.action";
+import toast from "react-hot-toast";
 
-interface DeleteAlertDialogProps {
-  isDeleting: boolean;
-  onDelete: () => Promise<void>;
-  title?: string;
-  description?: string;
+interface Props {
+  postId: string;
 }
 
-export const DeleteAlertDialog = ({
-  isDeleting,
-  onDelete,
-  title = "Delete Post",
-  description = "This action cannot be undone.",
-}: DeleteAlertDialogProps) => {
+export const DeleteAlertDialog: FC<Props> = ({ postId }) => {
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const handleDeletePost = async () => {
+    if (isDeleting) return;
+    try {
+      setIsDeleting(true);
+      const result = await deletePost(postId);
+      if (result.success) toast.success("Post deleted successfully");
+      else throw new Error(result.error);
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to delete post");
+    } finally {
+      setIsDeleting(false);
+    }
+  };
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
@@ -44,13 +55,15 @@ export const DeleteAlertDialog = ({
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{title}</AlertDialogTitle>
-          <AlertDialogDescription>{description}</AlertDialogDescription>
+          <AlertDialogTitle>Delete Post</AlertDialogTitle>
+          <AlertDialogDescription>
+            This action cannot be undone.
+          </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction
-            onClick={onDelete}
+            onClick={handleDeletePost}
             className="bg-red-500 hover:bg-red-600"
             disabled={isDeleting}
           >
