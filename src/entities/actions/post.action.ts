@@ -44,6 +44,12 @@ export const getPosts = async () => {
             name: true,
             image: true,
             username: true,
+            bio: true,
+            _count: {
+              select: {
+                followers: true,
+              },
+            },
           },
         },
         comments: {

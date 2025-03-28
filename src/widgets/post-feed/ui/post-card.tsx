@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Card, CardContent } from "@/shared/ui/card";
 import Link from "next/link";
 import { Avatar, AvatarImage } from "@/shared/ui/avatar";
-import { formatDistanceToNow } from "date-fns";
+import { format } from "date-fns";
 
 import { Button } from "@/shared//ui/button";
 import { HeartIcon, LogInIcon } from "lucide-react";
@@ -20,6 +20,7 @@ import {
   PostImage,
 } from "@/entities/post";
 import { PostCommentsForm } from "@/features/post-comments-form";
+import { UserHoverCard } from "@/features/user-hover-card";
 
 export const PostCard = ({
   post,
@@ -33,51 +34,33 @@ export const PostCard = ({
   const [showComments, setShowComments] = useState(false);
 
   return (
-    <Card className="overflow-hidden">
-      <CardContent className="p-4 sm:p-6">
+    <Card className="py-0">
+      <CardContent className="p-4 sm:p-4">
         <div className="space-y-4">
-          <div className="flex space-x-3 sm:space-x-4">
-            <Link href={`/profile/${post.author.username}`}>
-              <Avatar className="size-8 sm:w-10 sm:h-10">
+          <div className="space-y-3 sm:space-y-4">
+            <Link
+              href={`/profile/${post.author.username}`}
+              className="flex gap-3 items-center"
+            >
+              <Avatar className="size-6 sm:w-5 sm:h-5">
                 <AvatarImage src={post.author.image ?? "/avatar.png"} />
               </Avatar>
+              <UserHoverCard user={post.author} />
             </Link>
 
-            {/* POST HEADER & TEXT CONTENT */}
-            <div className="flex-1 min-w-0">
-              <div className="flex items-start justify-between">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-2 truncate">
-                  <Link
-                    href={`/profile/${post.author.username}`}
-                    className="font-semibold truncate"
-                  >
-                    {post.author.name}
-                  </Link>
-                  <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                    <Link href={`/profile/${post.author.username}`}>
-                      @{post.author.username}
-                    </Link>
-                    <span>•</span>
-                    <span>
-                      {formatDistanceToNow(new Date(post.createdAt))} ago
-                    </span>
-                  </div>
-                </div>
-
-                {dbUserId === post.author.id && (
-                  <DeleteAlertDialog postId={post.id} />
-                )}
+            <div className="flex space-x-4">
+              <div>
+                <h1 className="text-lg font-semibold mb-1">{post.title}</h1>
+                <p className="text-sm line-clamp-3">{post.content}</p>
               </div>
-              <h1 className="text-lg font-semibold mb-2">{post.title}</h1>
-              <p className="mt-2 text-sm text-foreground break-words">
-                {post.content}
-              </p>
+              {post.image && <PostImage postId={post.id} image={post.image} />}
             </div>
           </div>
 
-          {post.image && <PostImage postId={post.id} image={post.image} />}
-
-          <div className="flex items-center pt-2 space-x-4">
+          <div className="flex items-center pt-2 space-x-1 relative w-full">
+            <span className="text-[12px] text-muted-foreground">
+              {format(new Date(post.createdAt), "MMM d")}
+            </span>
             {user ? (
               <LikeButton
                 isLiked={post.likes.some((like) => like.userId === dbUserId)}
@@ -101,9 +84,13 @@ export const PostCard = ({
               showComments={showComments}
               commentsCount={post.comments.length}
             />
+            <div className="absolute right-0">
+              {dbUserId === post.author.id && (
+                <DeleteAlertDialog postId={post.id} />
+              )}
+            </div>
           </div>
 
-          {/* COMMENTS SECTION */}
           {showComments && (
             <div className="space-y-4 pt-4 border-t">
               <CommentsList comments={post.comments} />

@@ -9,12 +9,12 @@ interface Props {
 
 export const PostImage: FC<Props> = ({ postId, image }) => {
   return (
-    <div className="rounded-lg overflow-hidden">
+    <div className="flex-shrink-0">
       <Link href={`/post/${postId}`}>
         <Image
           src={image}
           alt="Post content"
-          className="w-full h-auto object-cover"
+          className="object-cover rounded-lg"
           width={200}
           height={200}
         />
