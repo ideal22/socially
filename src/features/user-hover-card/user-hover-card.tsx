@@ -31,7 +31,7 @@ export const UserHoverCard: FC<Props> = ({ user }) => {
           <span className="text-sm text-gray-500">he/him</span>
         </div>
         <div className="text-sm text-gray-500">
-          {user._count.followers} Followers
+          {user._count?.followers} Followers
         </div>
         {user.bio && <p className="text-sm text-gray-700 mt-4">{user.bio}</p>}
         <Button className="mt-3 w-full text-sm font-semibold">Follow</Button>

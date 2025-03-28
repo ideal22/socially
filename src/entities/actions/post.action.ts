@@ -99,6 +99,12 @@ export const getPostById = async (postId: string) => {
             name: true,
             username: true,
             image: true,
+            bio: true,
+            _count: {
+              select: {
+                followers: true,
+              },
+            },
           },
         },
         comments: {

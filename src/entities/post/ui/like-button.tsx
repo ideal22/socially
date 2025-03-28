@@ -1,3 +1,4 @@
+"use client";
 import { toggleLike } from "@/entities/actions/post.action";
 import { Button } from "@/shared/ui/button";
 import { HeartIcon } from "lucide-react";

@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/shared/ui/button";
 import { MessageCircleIcon } from "lucide-react";
 import { FC } from "react";

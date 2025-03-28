@@ -1,3 +1,4 @@
+"use client";
 import { createComment } from "@/entities/actions/post.action";
 import { Avatar, AvatarImage } from "@/shared/ui/avatar";
 import { Button } from "@/shared/ui/button";
